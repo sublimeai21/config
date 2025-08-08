@@ -15,7 +15,7 @@ A comprehensive configuration management system for Go applications with support
 ## Installation
 
 ```bash
-go get github.com/shared_pkg/config/core
+go get github.com/sublimeai21/config/core
 ```
 
 ## Quick Start
@@ -27,7 +27,7 @@ import (
     "fmt"
     "log"
     
-    core "github.com/shared_pkg/config/core"
+    core "github.com/sublimeai21/config/core"
 )
 
 func main() {

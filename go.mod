@@ -1,4 +1,4 @@
-module github.com/shared_pkg/config
+module github.com/sublimeai21/config
 
 go 1.21
 

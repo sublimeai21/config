@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	core "github.com/shared_pkg/config/core"
+	core "github.com/sublimeai21/config/core"
 )
 
 // ExampleConfigWatcher demonstrates how to implement a config watcher
