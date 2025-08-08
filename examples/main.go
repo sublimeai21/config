@@ -72,6 +72,10 @@ func main() {
 	fmt.Println("\n=== Using Helper Methods ===")
 
 	fmt.Printf("Database DSN: %s\n", manager.GetDatabaseDSN())
+	fmt.Printf("Write Database DSN: %s\n", manager.GetWriteDatabaseDSN())
+	fmt.Printf("Read Database DSN: %s\n", manager.GetReadDatabaseDSN())
+	fmt.Printf("Is Read/Write Database: %t\n", manager.IsReadWriteDatabase())
+	fmt.Printf("Database Config Type: %s\n", manager.GetDatabaseConfigType())
 	fmt.Printf("Redis Address: %s\n", manager.GetRedisAddr())
 	fmt.Printf("Server Address: %s\n", manager.GetServerAddr())
 	fmt.Printf("Is Development: %t\n", manager.IsDevelopment())

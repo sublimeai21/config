@@ -192,11 +192,54 @@ func (m *Manager) ValidateCurrent() error {
 	return m.validator.Validate(config)
 }
 
-// GetDatabaseDSN returns the database connection string
+// GetDatabaseDSN returns the database connection string (legacy compatibility)
 func (m *Manager) GetDatabaseDSN() string {
 	config := m.GetDatabaseConfig()
 	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		config.Host, config.Port, config.User, config.Password, config.DBName, config.SSLMode)
+}
+
+// GetWriteDatabaseDSN returns the write database connection string
+func (m *Manager) GetWriteDatabaseDSN() string {
+	config := m.GetDatabaseConfig()
+	
+	// If read/write configuration is set, use it
+	if config.DatabaseConfigType == "read_write" && config.DBWriteHost != "" {
+		return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
+			config.DBWriteHost, config.DBWritePort, config.DBWriteUser, config.DBWritePassword, 
+			config.DBWriteName, config.SSLMode)
+	}
+	
+	// Fallback to legacy configuration
+	return m.GetDatabaseDSN()
+}
+
+// GetReadDatabaseDSN returns the read database connection string
+func (m *Manager) GetReadDatabaseDSN() string {
+	config := m.GetDatabaseConfig()
+	
+	// If read/write configuration is set, use it
+	if config.DatabaseConfigType == "read_write" && config.DBReadHost != "" {
+		return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
+			config.DBReadHost, config.DBReadPort, config.DBReadUser, config.DBReadPassword, 
+			config.DBReadName, config.SSLMode)
+	}
+	
+	// Fallback to legacy configuration
+	return m.GetDatabaseDSN()
+}
+
+// IsReadWriteDatabase returns true if read/write database configuration is enabled
+func (m *Manager) IsReadWriteDatabase() bool {
+	config := m.GetDatabaseConfig()
+	return config.DatabaseConfigType == "read_write" && 
+		   config.DBWriteHost != "" && config.DBReadHost != ""
+}
+
+// GetDatabaseConfigType returns the database configuration type
+func (m *Manager) GetDatabaseConfigType() string {
+	config := m.GetDatabaseConfig()
+	return config.DatabaseConfigType
 }
 
 // GetRedisAddr returns the Redis address

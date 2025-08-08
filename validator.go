@@ -79,6 +79,64 @@ func (v *Validator) validateServer(config ServerConfig) {
 
 // validateDatabase validates database configuration
 func (v *Validator) validateDatabase(config DatabaseConfig) {
+	// Validate database configuration type
+	if config.DatabaseConfigType != "" && 
+	   config.DatabaseConfigType != "read_write" && 
+	   config.DatabaseConfigType != "legacy" && 
+	   config.DatabaseConfigType != "auto_detect" {
+		v.errors = append(v.errors, "database config type must be 'read_write', 'legacy', or 'auto_detect'")
+	}
+
+	// Validate read/write database configuration
+	if config.DatabaseConfigType == "read_write" {
+		v.validateReadWriteDatabase(config)
+	} else {
+		// Validate legacy database configuration
+		v.validateLegacyDatabase(config)
+	}
+}
+
+// validateReadWriteDatabase validates read/write database configuration
+func (v *Validator) validateReadWriteDatabase(config DatabaseConfig) {
+	// Validate write database
+	if config.DBWriteHost == "" {
+		v.errors = append(v.errors, "write database host is required for read/write configuration")
+	}
+	if config.DBWritePort == "" {
+		v.errors = append(v.errors, "write database port is required")
+	} else {
+		if _, err := strconv.Atoi(config.DBWritePort); err != nil {
+			v.errors = append(v.errors, "write database port must be a valid integer")
+		}
+	}
+	if config.DBWriteUser == "" {
+		v.errors = append(v.errors, "write database user is required")
+	}
+	if config.DBWriteName == "" {
+		v.errors = append(v.errors, "write database name is required")
+	}
+
+	// Validate read database
+	if config.DBReadHost == "" {
+		v.errors = append(v.errors, "read database host is required for read/write configuration")
+	}
+	if config.DBReadPort == "" {
+		v.errors = append(v.errors, "read database port is required")
+	} else {
+		if _, err := strconv.Atoi(config.DBReadPort); err != nil {
+			v.errors = append(v.errors, "read database port must be a valid integer")
+		}
+	}
+	if config.DBReadUser == "" {
+		v.errors = append(v.errors, "read database user is required")
+	}
+	if config.DBReadName == "" {
+		v.errors = append(v.errors, "read database name is required")
+	}
+}
+
+// validateLegacyDatabase validates legacy database configuration
+func (v *Validator) validateLegacyDatabase(config DatabaseConfig) {
 	if config.Host == "" {
 		v.errors = append(v.errors, "database host is required")
 	}

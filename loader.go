@@ -61,13 +61,32 @@ func (l *Loader) LoadFromEnvironment() (*Config, error) {
 			IdleTimeout:  getDurationEnv("SERVER_IDLE_TIMEOUT", 60*time.Second),
 		},
 		Database: DatabaseConfig{
+			// Read/Write Database Configuration
+			DBWriteHost:     getEnv("DB_WRITE_HOST", ""),
+			DBWritePort:     getEnv("DB_WRITE_PORT", "5432"),
+			DBWriteUser:     getEnv("DB_WRITE_USER", ""),
+			DBWritePassword: getEnv("DB_WRITE_PASSWORD", ""),
+			DBWriteName:     getEnv("DB_WRITE_NAME", ""),
+
+			DBReadHost:     getEnv("DB_READ_HOST", ""),
+			DBReadPort:     getEnv("DB_READ_PORT", "5432"),
+			DBReadUser:     getEnv("DB_READ_USER", ""),
+			DBReadPassword: getEnv("DB_READ_PASSWORD", ""),
+			DBReadName:     getEnv("DB_READ_NAME", ""),
+
+			// Legacy Database Configuration (Backward Compatibility)
 			Host:     getEnv("DB_HOST", "localhost"),
 			Port:     getEnv("DB_PORT", "5432"),
 			User:     getEnv("DB_USER", "postgres"),
 			Password: getEnv("DB_PASSWORD", ""),
 			DBName:   getEnv("DB_NAME", "app"),
-			SSLMode:  getEnv("DB_SSL_MODE", "disable"),
-			MaxConns: getIntEnv("DB_MAX_CONNS", 10),
+
+			// Database Type and Environment
+			SSLMode:            getEnv("DB_SSL_MODE", "disable"),
+			MaxConns:           getIntEnv("DB_MAX_CONNS", 10),
+			DBType:             getEnv("DB_TYPE", "postgresql"),
+			Environment:        getEnv("APP_ENVIRONMENT", "development"),
+			DatabaseConfigType: getEnv("DATABASE_CONFIG_TYPE", "auto_detect"),
 		},
 		Redis: RedisConfig{
 			Host:     getEnv("REDIS_HOST", "localhost"),

@@ -24,13 +24,34 @@ type ServerConfig struct {
 
 // DatabaseConfig holds database configuration
 type DatabaseConfig struct {
+	// --- Read/Write Database Configuration (Recommended) ---
+	// These fields are used when DATABASE_CONFIG_TYPE=read_write
+	DBWriteHost     string `mapstructure:"write_host"`
+	DBWritePort     string `mapstructure:"write_port"`
+	DBWriteUser     string `mapstructure:"write_user"`
+	DBWritePassword string `mapstructure:"write_password"`
+	DBWriteName     string `mapstructure:"write_dbname"`
+
+	DBReadHost     string `mapstructure:"read_host"`
+	DBReadPort     string `mapstructure:"read_port"`
+	DBReadUser     string `mapstructure:"read_user"`
+	DBReadPassword string `mapstructure:"read_password"`
+	DBReadName     string `mapstructure:"read_dbname"`
+
+	// --- Legacy Database Configuration (Backward Compatibility) ---
+	// These fields are used when DATABASE_CONFIG_TYPE=legacy
 	Host     string `mapstructure:"host"`
 	Port     string `mapstructure:"port"`
 	User     string `mapstructure:"user"`
 	Password string `mapstructure:"password"`
 	DBName   string `mapstructure:"dbname"`
-	SSLMode  string `mapstructure:"sslmode"`
-	MaxConns int    `mapstructure:"max_conns"`
+
+	// --- Database Type and Environment ---
+	SSLMode            string `mapstructure:"sslmode"`
+	MaxConns           int    `mapstructure:"max_conns"`
+	DBType             string `mapstructure:"type"`
+	Environment        string `mapstructure:"environment"`
+	DatabaseConfigType string `mapstructure:"config_type"`
 }
 
 // RedisConfig holds Redis configuration

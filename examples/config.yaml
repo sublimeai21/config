@@ -6,13 +6,32 @@ server:
   idle_timeout: "60s"
 
 database:
+  # Read/Write Database Configuration (Recommended)
+  write_host: "write-db.example.com"
+  write_port: "5432"
+  write_user: "write_user"
+  write_password: "write_password"
+  write_dbname: "myapp_write"
+  
+  read_host: "read-db.example.com"
+  read_port: "5432"
+  read_user: "read_user"
+  read_password: "read_password"
+  read_dbname: "myapp_read"
+  
+  # Legacy Database Configuration (Backward Compatibility)
   host: "localhost"
   port: "5432"
   user: "postgres"
   password: "password"
   dbname: "myapp"
+  
+  # Database Type and Environment
   sslmode: "disable"
   max_conns: 10
+  type: "postgresql"
+  environment: "development"
+  config_type: "read_write"
 
 redis:
   host: "localhost"

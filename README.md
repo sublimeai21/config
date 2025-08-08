@@ -68,13 +68,32 @@ type ServerConfig struct {
 ### Database Configuration
 ```go
 type DatabaseConfig struct {
+    // Read/Write Database Configuration (Recommended)
+    DBWriteHost     string `mapstructure:"write_host"`
+    DBWritePort     string `mapstructure:"write_port"`
+    DBWriteUser     string `mapstructure:"write_user"`
+    DBWritePassword string `mapstructure:"write_password"`
+    DBWriteName     string `mapstructure:"write_dbname"`
+
+    DBReadHost     string `mapstructure:"read_host"`
+    DBReadPort     string `mapstructure:"read_port"`
+    DBReadUser     string `mapstructure:"read_user"`
+    DBReadPassword string `mapstructure:"read_password"`
+    DBReadName     string `mapstructure:"read_dbname"`
+
+    // Legacy Database Configuration (Backward Compatibility)
     Host     string `mapstructure:"host"`
     Port     string `mapstructure:"port"`
     User     string `mapstructure:"user"`
     Password string `mapstructure:"password"`
     DBName   string `mapstructure:"dbname"`
-    SSLMode  string `mapstructure:"sslmode"`
-    MaxConns int    `mapstructure:"max_conns"`
+
+    // Database Type and Environment
+    SSLMode            string `mapstructure:"sslmode"`
+    MaxConns           int    `mapstructure:"max_conns"`
+    DBType             string `mapstructure:"type"`
+    Environment        string `mapstructure:"environment"`
+    DatabaseConfigType string `mapstructure:"config_type"`
 }
 ```
 
@@ -178,7 +197,11 @@ The manager provides convenient helper methods:
 
 ```go
 // Connection strings
-dsn := manager.GetDatabaseDSN()
+dsn := manager.GetDatabaseDSN()                    // Legacy compatibility
+writeDSN := manager.GetWriteDatabaseDSN()          // Write database DSN
+readDSN := manager.GetReadDatabaseDSN()            // Read database DSN
+isReadWrite := manager.IsReadWriteDatabase()       // Check if read/write is enabled
+configType := manager.GetDatabaseConfigType()      // Get config type
 redisAddr := manager.GetRedisAddr()
 serverAddr := manager.GetServerAddr()
 
@@ -206,13 +229,32 @@ The package supports the following environment variables:
 - `SERVER_IDLE_TIMEOUT` (default: "60s")
 
 ### Database
+
+#### Read/Write Database Configuration (Recommended)
+- `DB_WRITE_HOST` - Write database host (INSERT/UPDATE/DELETE)
+- `DB_WRITE_PORT` (default: "5432")
+- `DB_WRITE_USER` - Write database user
+- `DB_WRITE_PASSWORD` - Write database password
+- `DB_WRITE_NAME` - Write database name
+
+- `DB_READ_HOST` - Read database host (SELECT)
+- `DB_READ_PORT` (default: "5432")
+- `DB_READ_USER` - Read database user
+- `DB_READ_PASSWORD` - Read database password
+- `DB_READ_NAME` - Read database name
+
+#### Legacy Database Configuration (Backward Compatibility)
 - `DB_HOST` (default: "localhost")
 - `DB_PORT` (default: "5432")
 - `DB_USER` (default: "postgres")
 - `DB_PASSWORD` (default: "")
 - `DB_NAME` (default: "app")
+
+#### Database Type and Environment
 - `DB_SSL_MODE` (default: "disable")
 - `DB_MAX_CONNS` (default: 10)
+- `DB_TYPE` (default: "postgresql")
+- `DATABASE_CONFIG_TYPE` - Configuration type: "read_write", "legacy", or "auto_detect" (default: "auto_detect")
 
 ### Redis
 - `REDIS_HOST` (default: "localhost")
