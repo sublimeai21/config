@@ -80,10 +80,10 @@ func (v *Validator) validateServer(config ServerConfig) {
 // validateDatabase validates database configuration
 func (v *Validator) validateDatabase(config DatabaseConfig) {
 	// Validate database configuration type
-	if config.DatabaseConfigType != "" && 
-	   config.DatabaseConfigType != "read_write" && 
-	   config.DatabaseConfigType != "legacy" && 
-	   config.DatabaseConfigType != "auto_detect" {
+	if config.DatabaseConfigType != "" &&
+		config.DatabaseConfigType != "read_write" &&
+		config.DatabaseConfigType != "legacy" &&
+		config.DatabaseConfigType != "auto_detect" {
 		v.errors = append(v.errors, "database config type must be 'read_write', 'legacy', or 'auto_detect'")
 	}
 
