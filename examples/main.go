@@ -5,13 +5,13 @@ import (
 	"log"
 	"os"
 
-	core "github.com/sublimeai21/config/core"
+	config "github.com/sublimeai21/config"
 )
 
 // ExampleConfigWatcher demonstrates how to implement a config watcher
 type ExampleConfigWatcher struct{}
 
-func (w *ExampleConfigWatcher) OnConfigChanged(oldConfig, newConfig *core.Config) {
+func (w *ExampleConfigWatcher) OnConfigChanged(oldConfig, newConfig *config.Config) {
 	fmt.Println("Configuration changed!")
 	if oldConfig != nil && newConfig != nil {
 		fmt.Printf("Server port changed from %s to %s\n",
@@ -21,7 +21,7 @@ func (w *ExampleConfigWatcher) OnConfigChanged(oldConfig, newConfig *core.Config
 
 func main() {
 	// Create a new configuration manager
-	manager := core.NewManager()
+	manager := config.NewManager()
 
 	// Add a configuration watcher
 	watcher := &ExampleConfigWatcher{}
@@ -38,7 +38,7 @@ func main() {
 	os.Setenv("DB_NAME", "example")
 	os.Setenv("JWT_SECRET", "your-super-secret-jwt-key-that-is-at-least-32-characters-long")
 
-	err := manager.Load(core.EnvironmentStrategy)
+	err := manager.Load(config.EnvironmentStrategy)
 	if err != nil {
 		log.Fatalf("Failed to load configuration: %v", err)
 	}
@@ -60,7 +60,7 @@ func main() {
 	// Set the config path environment variable
 	os.Setenv("CONFIG_PATH", "examples/config.yaml")
 
-	err = manager.Load(core.FileStrategy)
+	err = manager.Load(config.FileStrategy)
 	if err != nil {
 		log.Printf("Failed to load from file (this is expected if config.yaml doesn't exist): %v", err)
 	} else {

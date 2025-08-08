@@ -15,7 +15,7 @@ A comprehensive configuration management system for Go applications with support
 ## Installation
 
 ```bash
-go get github.com/sublimeai21/config/core
+go get github.com/sublimeai21/config
 ```
 
 ## Quick Start
@@ -27,15 +27,15 @@ import (
     "fmt"
     "log"
     
-    core "github.com/sublimeai21/config/core"
+    "github.com/sublimeai21/config"
 )
 
 func main() {
     // Create a new configuration manager
-    manager := core.NewManager()
+    manager := config.NewManager()
     
     // Load configuration from environment variables
-    err := manager.Load(core.EnvironmentStrategy)
+    err := manager.Load(config.EnvironmentStrategy)
     if err != nil {
         log.Fatalf("Failed to load configuration: %v", err)
     }
@@ -131,7 +131,7 @@ type AppConfig struct {
 
 ### Environment Variables
 ```go
-err := manager.Load(core.EnvironmentStrategy)
+err := manager.Load(config.EnvironmentStrategy)
 ```
 
 Environment variables are automatically mapped:
@@ -143,12 +143,12 @@ Environment variables are automatically mapped:
 ### File-based Configuration
 ```go
 os.Setenv("CONFIG_PATH", "config.yaml")
-err := manager.Load(core.FileStrategy)
+err := manager.Load(config.FileStrategy)
 ```
 
 ### Hybrid Strategy
 ```go
-err := manager.Load(core.HybridStrategy)
+err := manager.Load(config.HybridStrategy)
 ```
 Tries file first, falls back to environment variables.
 
@@ -159,7 +159,7 @@ Implement the `ConfigWatcher` interface to receive notifications when configurat
 ```go
 type MyWatcher struct{}
 
-func (w *MyWatcher) OnConfigChanged(oldConfig, newConfig *core.Config) {
+func (w *MyWatcher) OnConfigChanged(oldConfig, newConfig *config.Config) {
     fmt.Println("Configuration changed!")
     if oldConfig != nil && newConfig != nil {
         fmt.Printf("Server port changed from %s to %s\n",
