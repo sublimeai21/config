@@ -11,7 +11,7 @@ import (
 func main() {
 	// Example 1: Load configuration from environment variables
 	fmt.Println("=== Loading from Environment Variables ===")
-	
+
 	// Set environment variables (in real applications, these would be set by your system)
 	os.Setenv("SERVER_PORT", "9090")
 	os.Setenv("SERVER_HOST", "127.0.0.1")
@@ -59,10 +59,10 @@ func main() {
 
 	// Example 4: Reloading configuration
 	fmt.Println("\n=== Reloading Configuration ===")
-	
+
 	// Change an environment variable
 	os.Setenv("SERVER_PORT", "8081")
-	
+
 	err = manager.Reload()
 	if err != nil {
 		log.Printf("Failed to reload configuration: %v", err)
@@ -73,7 +73,7 @@ func main() {
 
 	// Example 5: Accessing specific configurations
 	fmt.Println("\n=== Accessing Specific Configurations ===")
-	
+
 	jwtConfig := manager.GetJWTConfig()
 	fmt.Printf("JWT Secret length: %d characters\n", len(jwtConfig.Secret))
 	fmt.Printf("JWT Expiration: %v\n", jwtConfig.Expiration)
@@ -111,7 +111,7 @@ To use this example with a .env file:
    ```bash
    # Using dotenv (if you have it installed)
    dotenv -f .env go run main.go
-   
+
    # Or export the variables manually
    export $(cat .env | xargs)
    go run main.go

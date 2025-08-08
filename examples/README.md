@@ -5,7 +5,7 @@ This directory contains examples demonstrating how to use the Go Configuration M
 ## Files
 
 - `main.go` - Complete example showing all features
-- `env_example.go` - Environment variables example
+- `env_example/main.go` - Environment variables example
 - `config.yaml` - YAML configuration file example
 - `.env` - Environment variables file example
 
@@ -18,7 +18,7 @@ go run main.go
 
 ### Environment Variables Example
 ```bash
-go run env_example.go
+go run env_example/main.go
 ```
 
 ## Using Environment Variables
